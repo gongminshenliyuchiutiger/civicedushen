@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公民好神—社會求生指南（分享人：邱俐瑜）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8b5cf6; /* Purple */
+            --secondary-color: #ec4899; /* Pink */
+            --accent-color: #facc15; /* Yellow */
+            --bg-light: #f8f5ff;
+            --bg-gradient: linear-gradient(135deg, #f3e8ff 0%, #e0e7ff 100%);
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            scroll-behavior: smooth;
+            background-color: var(--bg-light);
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Added bounce effect */
+            transform: perspective(1000px);
+            position: relative;
+            overflow: hidden; /* Clip hover effect */
+            cursor: pointer; /* Indicate clickable for expansion */
+        }
+
+        .card::before { /* Subtle gradient overlay on hover */
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(139, 92, 246, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) perspective(1000px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.25);
+        }
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .tab-btn.active {
+           background-color: var(--primary-color);
+           color: white;
+           border-bottom: 3px solid var(--accent-color);
+        }
+        .tab-btn:not(.active):hover {
+            background-color: #ede9fe; /* Lighter purple on hover */
+            color: var(--primary-color);
+        }
+
+
+        .tab-content { display: none; }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .floating {
+            animation: floating 3.5s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px) rotate(-2deg); }
+            50% { transform: translateY(-18px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(-2deg); }
+        }
+
+        .highlight-text {
+            position: relative;
+            display: inline-block;
+            z-index: 1;
+            padding: 0 0.2em; /* Add slight padding */
+            margin: 0 -0.2em; /* Adjust margin to compensate */
+        }
+        .highlight-text::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: -5px;
+            right: -5px;
+            height: 45%; /* Increased height */
+            background-color: rgba(250, 204, 21, 0.6); /* Brighter yellow, slightly less transparent */
+            z-index: -1;
+            transform: rotate(-2.5deg) scaleX(1.05);
+            transition: all 0.3s ease;
+            border-radius: 3px; /* Slight rounding */
+        }
+        .highlight-text:hover::after {
+            transform: rotate(2deg) scaleX(1.08) translateY(-2px);
+            background-color: rgba(250, 204, 21, 0.8);
+        }
+        /* Specific highlight for summary section */
+        #summary .highlight-text::after {
+            background-color: rgba(255, 255, 180, 0.7); /* Lighter yellow for dark background */
+        }
+         #summary .highlight-text:hover::after {
+            background-color: rgba(255, 255, 180, 0.9);
+        }
+
+        .interactive-btn {
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+        .interactive-btn:hover {
+            transform: scale(1.08) rotate(-2deg);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+        .interactive-btn:active {
+             transform: scale(1.02) rotate(0deg);
+        }
+
+        /* --- Fade In Animation --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.215, 0.610, 0.355, 1), transform 0.8s cubic-bezier(0.215, 0.610, 0.355, 1);
+            transition-delay: var(--delay, 0s);
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 14px;
+            border-radius: 50%;
+            display: none;
+            z-index: 500;
+            transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+            cursor: pointer;
+        }
+        .back-to-top:hover {
+            transform: scale(1.15) rotate(-10deg);
+            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.5);
+        }
+
+        /* --- Modal Styles --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(30, 27, 75, 0.85); /* Darker purple overlay */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px); /* Safari support */
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 16px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            transform: scale(0.9) translateY(20px);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+            position: relative; /* For close button positioning */
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #eee;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1; /* Ensure 'x' is centered */
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            z-index: 10; /* Ensure button is above content */
+        }
+        .modal-close-btn:hover {
+            background-color: #ddd;
+            transform: rotate(90deg);
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        body.modal-active {
+            overflow: hidden; /* Prevent background scroll when modal is open */
+        }
+        /* Style adjustments for content inside modal */
+        .modal-content .card { /* Disable hover effects inside modal */
+             transform: none !important;
+             box-shadow: none !important;
+             cursor: default;
+        }
+        .modal-content .card::before {
+             opacity: 0 !important;
+        }
+        .modal-content .text-4xl, .modal-content .text-5xl { font-size: 2.8rem; } /* Slightly larger icons */
+        .modal-content h3 { margin-bottom: 1rem; font-size: 1.5rem; color: var(--primary-color)}
+        .modal-content p { font-size: 1.1rem; line-height: 1.8; }
+        .modal-content .highlight-text::after { background-color: rgba(250, 204, 21, 0.7); } /* Make highlight persistent */
+
+
+        /* Enhanced Section Styling */
+        section {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+        #why-learn { background: var(--bg-gradient); }
+        #challenges { background: #ffffff; } /* Plain white for contrast */
+        #mindset { background: linear-gradient(135deg, #e0e7ff 0%, #fbcfe8 100%); } /* Blue to Pink */
+        #learning-tips { background: var(--bg-gradient); }
+        #quiz { background: #ffffff; }
+        #summary { background: linear-gradient(135deg, #a78bfa 0%, #6366f1 100%); } /* Slightly adjusted purple gradient */
+
+
+        /* Add slight delay to children for staggered animation */
+        .stagger-children > * {
+             opacity: 0; /* Start hidden for stagger */
+             transform: translateY(20px);
+             transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+             transition-delay: calc(var(--stagger-index, 0) * 0.1s + 0.2s); /* Base delay + stagger */
+        }
+        .fade-in.visible .stagger-children > * { /* Trigger stagger when parent is visible */
+             opacity: 1;
+             transform: translateY(0);
+        }
+
+        /* --- Speech Bubble --- */
+        #speech-bubble {
+            position: absolute;
+            bottom: 90%; /* Position above the image container */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            color: #555;
+            padding: 15px 20px;
+            border-radius: 15px;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: max-content;
+            max-width: 280px; /* Adjust as needed */
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 500;
+            z-index: 100;
+            display: none; /* Initially hidden */
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #speech-bubble::after { /* Pointer/Tail */
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px;
+            border-style: solid;
+            border-color: white transparent transparent transparent; /* Match background */
+        }
+         #speech-bubble::before { /* Border for pointer */
+             content: '';
+             position: absolute;
+             top: calc(100% + 2px); /* Position slightly below the main tail */
+             left: 50%;
+             transform: translateX(-50%);
+             border-width: 12px; /* Slightly larger */
+             border-style: solid;
+             border-color: var(--primary-color) transparent transparent transparent; /* Match border color */
+             z-index: -1; /* Behind the main tail */
+         }
+        #speech-bubble.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Prevent clicks on the "轉念!" text wrapper */
+        .non-interactive {
+            pointer-events: none;
+        }
+
+        /* Styling for top social links */
+        .top-social-links a {
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+        .top-social-links a:hover {
+            transform: scale(1.2);
+            color: var(--primary-color);
+        }
+
+    </style>
+</head>
+<body class="text-gray-800">
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden bg-gradient-to-br from-indigo-600 to-purple-700 text-white">
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 mix-blend-overlay">
+            <!-- Subtle pattern -->
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="p" width="50" height="50" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0h50v50H0z" fill="none"/><path d="M12.5 0v50m25 0v-50M0 12.5h50m0 25H0" stroke="#FFF" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(#p)"/></svg>
+        </div>
+
+        <div class="container mx-auto px-4 py-20 md:py-24 relative z-10">
+            <div class="flex flex-col md:flex-row items-center text-center md:text-left">
+                <div class="md:w-1/2 mb-10 md:mb-0 fade-in" style="--delay: 0.1s;">
+                    <h1 class="text-5xl md:text-6xl font-black mb-4 drop-shadow-lg">公民好神—</h1>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 drop-shadow-md">社會求生指南</h2>
+                    <p class="text-xl mb-10 font-medium">分享人：新北市立雙溪高級中學 邱俐瑜</p>
+                    <button id="start-journey" class="interactive-btn bg-white text-purple-700 font-bold py-3 px-8 rounded-full hover:bg-yellow-300 transition duration-300 shadow-lg text-lg">
+                        🚀 開始社會求生之旅
+                    </button>
+                </div>
+                <div class="md:w-1/2 flex justify-center relative fade-in" style="--delay: 0.3s;">
+                    <div class="floating relative cursor-pointer">
+                        <img src="image/LiyuChillGuy(W).svg" id="liyu-image" alt="Liyu Chill Guy Portrait" class="w-72 h-72 md:w-96 md:h-96 object-contain drop-shadow-2xl">
+                    </div>
+                     <!-- Speech Bubble (Initially Hidden) -->
+                     <div id="speech-bubble">
+                        <!-- Content will be injected by JS -->
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-0 left-0 w-full z-0">
+             <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,64 C240,110, 480,90, 720,64 C960,40, 1200,70, 1440,80 L1440,120 L0,120 Z" fill="#f8f5ff"></path>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Top Social Links Section -->
+    <nav class="bg-white py-3 shadow-sm sticky top-0 z-50">
+      <div class="container mx-auto px-4">
+        <div class="flex justify-center items-center gap-6 top-social-links text-gray-600">
+            <a href="https://gongminshen.tumblr.com" target="_blank" rel="noopener noreferrer" title="官方網站" class="text-xl">
+                <i class="fas fa-globe"></i>
+                <span class="sr-only">官方網站</span>
+            </a>
+            <a href="https://sites.google.com/view/gongminshen" target="_blank" rel="noopener noreferrer" title="協作平臺" class="text-xl">
+                <i class="fas fa-users"></i>
+                <span class="sr-only">協作平臺</span>
+            </a>
+            <a href="https://www.facebook.com/GongMinShen" target="_blank" rel="noopener noreferrer" title="FB粉專" class="text-xl">
+                 <i class="fab fa-facebook-f"></i>
+                 <span class="sr-only">FB粉專</span>
+            </a>
+            <a href="https://www.instagram.com/gongminshen" target="_blank" rel="noopener noreferrer" title="IG粉專" class="text-xl">
+                 <i class="fab fa-instagram"></i>
+                 <span class="sr-only">IG粉專</span>
+            </a>
+        </div>
+      </div>
+    </nav>
+
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12">
+        <!-- Why Learn Civics Section -->
+        <section id="why-learn" class="mb-20 fade-in rounded-3xl shadow-lg overflow-hidden">
+             <h2 class="text-4xl font-bold mb-12 text-center pt-12">
+                <span class="gradient-text">先別管考試了，學公民到底能幹嘛？</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-6 pb-12 stagger-children">
+                 <!-- Added expandable-block class and data-title -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card border-l-4 border-red-400 expandable-block" data-title="智慧財產" style="--stagger-index: 1;">
+                    <div class="text-5xl mb-4">🤔</div>
+                    <h3 class="text-xl font-bold mb-3 text-red-600">智慧財產</h3>
+                    <p class="text-gray-700">"辛苦經營的頻道被前女友媽媽搶走，怎麼辦？"</p>
+                    <div class="mt-4 text-sm text-gray-500">了解權利與法律，保護自己的創作</div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card border-l-4 border-blue-400 expandable-block" data-title="身體自主" style="--stagger-index: 2;">
+                    <div class="text-5xl mb-4">😳</div>
+                    <h3 class="text-xl font-bold mb-3 text-blue-600">身體自主</h3>
+                    <p class="text-gray-700">"撒拉嘿呦，歐巴要求色色，但我今年才16歲，可以答應嗎？"</p>
+                    <div class="mt-4 text-sm text-gray-500">認識法律界線，保護自己不受侵害</div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card border-l-4 border-green-400 expandable-block" data-title="國際經濟" style="--stagger-index: 3;">
+                    <div class="text-5xl mb-4">💰</div>
+                    <h3 class="text-xl font-bold mb-3 text-green-600">國際經濟</h3>
+                    <p class="text-gray-700">"Baby我們的股票好像跳樓機，為什麼川普一個關稅帝君可以呼風喚雨？"</p>
+                    <div class="mt-4 text-sm text-gray-500">理解全球經濟與政治的關聯性</div>
+                </div>
+            </div>
+
+            <div class="mt-4 mx-6 mb-12 bg-gradient-to-r from-purple-100 to-pink-100 p-8 rounded-2xl shadow-md fade-in" style="--delay: 0.4s;">
+                <h3 class="text-2xl font-bold mb-6 text-center text-purple-800">✨ 趨吉避凶 ✨</h3>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md w-full md:w-1/2 text-center transform hover:scale-105 transition duration-300 expandable-block" data-title="趨吉避凶1">
+                        <div class="flex items-center justify-center mb-4">
+                            <div class="bg-yellow-200 rounded-full p-3 mr-4 animate-pulse">
+                                <svg class="w-8 h-8 text-yellow-600" fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.002z"></path></svg>
+                            </div>
+                            <h4 class="text-xl font-bold">懂一點</h4>
+                        </div>
+                        <p class="text-gray-700 text-lg">= 少踩雷 💣</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-md w-full md:w-1/2 text-center transform hover:scale-105 transition duration-300 expandable-block" data-title="趨吉避凶2">
+                        <div class="flex items-center justify-center mb-4">
+                            <div class="bg-green-200 rounded-full p-3 mr-4 animate-pulse" style="animation-delay: 0.2s;">
+                                <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            </div>
+                            <h4 class="text-xl font-bold">懂多點</h4>
+                        </div>
+                        <p class="text-gray-700 text-lg">= 少吃虧 🛡️</p>
+                    </div>
+                </div>
+
+                <p class="text-center mt-8 text-lg text-purple-800 font-medium">
+                    不是要你愛上公民，但懂點皮毛，能讓你<span class="highlight-text">少遇到</span>很多麻煩。
+                </p>
+            </div>
+        </section>
+
+        <!-- Challenges Section -->
+        <section id="challenges" class="mb-20 fade-in rounded-3xl shadow-lg overflow-hidden">
+            <h2 class="text-4xl font-bold mb-12 text-center pt-12">
+                <span class="gradient-text">為啥覺得公民科有點煩？</span> 😩
+            </h2>
+
+            <!-- Changed md:grid-cols-2 to md:grid-cols-3 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-6 pb-12 stagger-children">
+                <div class="bg-white rounded-xl shadow-lg p-6 card expandable-block" data-title="學習挑戰：名詞複雜" style="--stagger-index: 1;">
+                    <div class="flex items-center mb-4 group">
+                        <div class="bg-red-100 rounded-full p-3 mr-4 transform group-hover:rotate-12 transition duration-300">
+                           <span class="text-3xl">🤯</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-red-700">名詞艱澀關係複雜</h3>
+                    </div>
+                    <p class="text-gray-700">充滿專業名詞概念和術語，概念間的關聯性又很複雜，真是神累。</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card expandable-block" data-title="學習挑戰：理論脫節" style="--stagger-index: 2;">
+                    <div class="flex items-center mb-4 group">
+                         <div class="bg-orange-100 rounded-full p-3 mr-4 transform group-hover:rotate-12 transition duration-300">
+                           <span class="text-3xl">🤷‍♀️</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-orange-600">名不符實比如政治</h3>
+                    </div>
+                    <p class="text-gray-700">有些課本上提到的運作模式和實際並不相符，真是形而上的公民。</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card expandable-block" data-title="學習挑戰：內容變動" style="--stagger-index: 3;">
+                    <div class="flex items-center mb-4 group">
+                         <div class="bg-blue-100 rounded-full p-3 mr-4 transform group-hover:rotate-12 transition duration-300">
+                           <span class="text-3xl">🔄</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-blue-600">背了又忘背好又改</h3>
+                    </div>
+                    <p class="text-gray-700">隨時代而變動，隨時事而調整，公民科就是一直動此動此。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mindset Section -->
+        <section id="mindset" class="mb-20 fade-in rounded-3xl shadow-lg overflow-hidden">
+            <h2 class="text-4xl font-bold mb-12 text-center pt-12">
+                <span class="gradient-text">神也是要讀書的</span> 🧠
+            </h2>
+
+            <div class="bg-white rounded-2xl shadow-xl p-8 m-6 overflow-hidden">
+                <div class="flex flex-col md:flex-row items-center gap-10">
+                    <!-- Added mb-8 to prevent overlap -->
+                    <div class="md:w-1/3 fade-in mb-8 md:mb-0" style="--delay: 0.1s;">
+                        <div class="relative group">
+                             <svg class="w-full filter group-hover:drop-shadow-lg transition duration-300" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#f3e8ff" d="M47.8,-63.1C62.5,-53.6,75.2,-40.3,79.6,-25.2C84,-10.1,80.1,6.8,72.1,19.9C64.1,33.1,52.1,42.5,39.5,50.5C26.9,58.5,13.4,65,-0.4,65.5C-14.3,66,-28.5,60.6,-40.3,51.8C-52.1,43,-61.4,30.9,-67,17C-72.5,3.1,-74.3,-12.5,-69.5,-26.3C-64.7,-40.1,-53.3,-52,-40.2,-61.4C-27.1,-70.8,-13.5,-77.7,0.9,-78.5C15.3,-79.3,30.6,-74.3,47.8,-63.1Z" transform="translate(100 100)" />
+                                <g transform="translate(100 100)">
+                                    <text x="0" y="0" font-family="'Noto Sans TC', sans-serif" font-size="16" fill="#6b21a8" text-anchor="middle" font-weight="bold">社會Online</text>
+                                    <text x="0" y="20" font-family="'Noto Sans TC', sans-serif" font-size="12" fill="#8b5cf6" text-anchor="middle">遊戲規則 =</text>
+                                     <text x="0" y="40" font-family="'Noto Sans TC', sans-serif" font-size="14" fill="#a855f7" text-anchor="middle" font-weight="bold">公民課!</text>
+                                </g>
+                            </svg>
+                             <!-- non-interactive prevents clicks ON the text div -->
+                            <div class="non-interactive absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white bg-opacity-80 backdrop-blur-sm p-3 rounded-lg shadow-lg border border-purple-200 rotate-[-5deg] group-hover:rotate-0 group-hover:scale-110 transition duration-300">
+                                <p class="text-purple-800 font-bold text-center text-lg">💡 轉念！</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="md:w-2/3 fade-in" style="--delay: 0.3s;">
+                        <div class="bg-purple-50 p-6 rounded-xl mb-6 border border-purple-200 shadow-sm transform hover:shadow-md transition duration-300 expandable-block" data-title="心態：社會Online說明書">
+                            <h3 class="text-2xl font-bold mb-4 text-purple-800">
+                                把公民課當成「<span class="highlight-text">大型真人社會Online</span>」的遊戲規則說明書 📜
+                            </h3>
+                            <p class="text-gray-700">
+                                就像玩遊戲需要了解規則才能獲勝，在社會中生活也需要了解「規則」才能順利前進。公民課就是教你這些規則的指南，幫助你在社會這個大遊戲中少走彎路、多拿經驗值！
+                            </p>
+                        </div>
+
+                        <div class="space-y-4 stagger-children">
+                            <div class="flex items-start bg-white p-4 rounded-lg shadow-sm border-l-4 border-purple-300 expandable-block" data-title="學習心態1" style="--stagger-index: 1;">
+                                <div class="bg-purple-100 rounded-full p-2 mr-3 flex-shrink-0 mt-1">
+                                    <svg class="w-5 h-5 text-purple-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800">上課認真勝過回家用功</p>
+                                    <p class="text-gray-600 text-sm">課堂專注=高效學習Buff ⚡️ > 回家苦讀Debuff 😵</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start bg-white p-4 rounded-lg shadow-sm border-l-4 border-purple-400 expandable-block" data-title="學習心態2" style="--stagger-index: 2;">
+                                <div class="bg-purple-100 rounded-full p-2 mr-3 flex-shrink-0 mt-1">
+                                    <svg class="w-5 h-5 text-purple-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800">國中或許可以靠小聰明，但高中必須靠勤累積</p>
+                                    <p class="text-gray-600 text-sm">高中難度level up! 📈 持續累積才是王道，別揮霍運氣。</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start bg-white p-4 rounded-lg shadow-sm border-l-4 border-purple-500 expandable-block" data-title="學習心態3" style="--stagger-index: 3;">
+                                <div class="bg-purple-100 rounded-full p-2 mr-3 flex-shrink-0 mt-1">
+                                    <svg class="w-5 h-5 text-purple-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-800">學問要累積，問題不要累積</p>
+                                    <p class="text-gray-600 text-sm">問題像大便，不排泄易便秘！及時清腸清 bug 🐛</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Tips Section -->
+        <section id="learning-tips" class="mb-20 fade-in rounded-3xl shadow-lg overflow-hidden">
+             <h2 class="text-4xl font-bold mb-12 text-center pt-12">
+                <span class="gradient-text">公民練功秘笈</span> 📚✨
+            </h2>
+
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden mx-6 mb-12">
+                <div class="flex flex-col sm:flex-row border-b border-purple-200">
+                    <button class="tab-btn flex-1 py-4 px-6 font-bold text-center text-gray-500 hover:bg-purple-50 hover:text-purple-700 transition-colors duration-300 active" data-tab="effective">
+                        🎯 有效學習心法
+                    </button>
+                    <button class="tab-btn flex-1 py-4 px-6 font-bold text-center text-gray-500 hover:bg-purple-50 hover:text-purple-700 transition-colors duration-300" data-tab="methods">
+                        🛠️ 學習方法工具箱
+                    </button>
+                    <button class="tab-btn flex-1 py-4 px-6 font-bold text-center text-gray-500 hover:bg-purple-50 hover:text-purple-700 transition-colors duration-300" data-tab="exam">
+                        💯 考試技巧加持
+                    </button>
+                </div>
+
+                 <!-- Tab Content: Effective Learning -->
+                <div class="tab-content active p-8" id="effective-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 stagger-children">
+                        <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-6 shadow-md card expandable-block" data-title="有效學習：教別人" style="--stagger-index: 1;">
+                             <div class="flex items-center mb-6 group">
+                                <div class="bg-purple-200 rounded-full p-3 mr-4 transform group-hover:scale-110 transition duration-300">
+                                    <svg class="w-8 h-8 text-purple-700" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"></path></svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-purple-800">最快學會的方式就是：<span class="highlight-text">教人</span></h3>
+                            </div>
+                            <p class="text-gray-700 mb-4">
+                                費曼學習法！當你能把概念講給阿嬤都聽懂時，你就真的懂了。找出學習夥伴互相教學，效果加倍！
+                            </p>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-purple-100">
+                                <p class="text-sm text-purple-700 font-medium">
+                                    <span class="font-bold">實踐：</span> 組個讀書小組，輪流當老師講解章節，或對著鏡子/寵物練習。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 shadow-md card expandable-block" data-title="有效學習：問為什麼" style="--stagger-index: 2;">
+                           <div class="flex items-center mb-6 group">
+                                <div class="bg-blue-200 rounded-full p-3 mr-4 transform group-hover:scale-110 transition duration-300">
+                                    <svg class="w-8 h-8 text-blue-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-blue-800">讀完一個段落就對自己說：<span class="highlight-text">Look at my eyes，tell me，why？</span></h3>
+                            </div>
+                             <p class="text-gray-700 mb-4">
+                                拒當知識海綿寶寶！主動追問「為什麼這樣規定？」、「背後的原因是啥？」，挖得越深，理解越透徹。
+                            </p>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-100">
+                                <p class="text-sm text-blue-700 font-medium">
+                                    <span class="font-bold">實踐：</span> 筆記旁留「Why?」專區，寫下疑問。找不到答案？勇敢問老師！
+                                </p>
+                            </div>
+                        </div>
+
+                         <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 shadow-md card expandable-block" data-title="有效學習：連結生活" style="--stagger-index: 3;">
+                           <div class="flex items-center mb-6 group">
+                                <div class="bg-green-200 rounded-full p-3 mr-4 transform group-hover:scale-110 transition duration-300">
+                                    <svg class="w-8 h-8 text-green-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd"></path></svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-green-800">看到什麼新聞/鳥事都：<span class="highlight-text">想想公民</span></h3>
+                            </div>
+                             <p class="text-gray-700 mb-4">
+                                公民知識不是活在象牙塔！把學到的概念跟社會新聞、生活經驗連結起來，知識馬上變立體。
+                            </p>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-green-100">
+                                <p class="text-sm text-green-700 font-medium">
+                                    <span class="font-bold">實踐：</span> 每天看一則新聞，試著用公民角度分析：這跟哪個單元有關？涉及哪些權利義務？
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl p-6 shadow-md card expandable-block" data-title="有效學習：時間管理" style="--stagger-index: 4;">
+                           <div class="flex items-center mb-6 group">
+                                <div class="bg-amber-200 rounded-full p-3 mr-4 transform group-hover:scale-110 transition duration-300">
+                                    <svg class="w-8 h-8 text-amber-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-amber-800">花時間讀書≠有效，但有效一定得<span class="highlight-text">花時間</span></h3>
+                            </div>
+                             <p class="text-gray-700 mb-4">
+                                死讀書不如巧讀書。專注、用對方法比長時間磨屁股重要。但別妄想速成，知識需要時間醞釀。
+                            </p>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-amber-100">
+                                <p class="text-sm text-amber-700 font-medium">
+                                    <span class="font-bold">實踐：</span> 運用番茄鐘、間隔複習法，找到最適合自己的高效學習節奏。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Tab Content: Learning Methods -->
+                <div class="tab-content p-8" id="methods-content">
+                     <div class="flex flex-col md:flex-row gap-8">
+                        <div class="md:w-1/2 space-y-6">
+                            <div class="bg-white border-2 border-purple-200 rounded-xl p-6 shadow-md expandable-block" data-title="學習方法：理解至上">
+                                <h3 class="text-xl font-bold mb-4 text-purple-800">🧠 理解勝於記憶</h3>
+                                <p class="text-gray-700 mb-4">
+                                    能記就不背，能理解就不記，<span class="highlight-text">能理解還能感覺更讚（感覺到了就是一輩子）。</span>
+                                </p>
+                                <p class="text-gray-600">
+                                    死背是暫存，理解是硬碟存檔！找到知識的「感覺」，讓它內化成你的直覺反應。
+                                </p>
+                            </div>
+
+                            <div class="bg-purple-50 rounded-xl p-6 shadow-md expandable-block" data-title="學習方法：概念連結">
+                                <h3 class="text-xl font-bold mb-4 text-purple-800">🕸️ 概念連結法</h3>
+                                <p class="text-gray-700 mb-4">
+                                    知識點不是孤島！把它們跟你熟悉的事物、生活經驗串聯起來，打造你的知識網絡。
+                                </p>
+                                <ul class="space-y-3 text-gray-700 list-disc list-inside">
+                                    <li>「三權分立」→ 家裡爸媽管錢、你管家事、阿公阿嬤當法官？</li>
+                                    <li>「供需法則」→ 搶演唱會門票、限量球鞋的愛恨情仇！</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="md:w-1/2 space-y-6">
+                            <div class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl p-6 shadow-md expandable-block" data-title="學習方法：視覺化">
+                                <h3 class="text-xl font-bold mb-4 text-indigo-800">🎨 視覺化學習法</h3>
+                                <p class="text-gray-700 mb-4">
+                                    文字太抽象？把它變成圖！心智圖、流程圖、甚至畫成小漫畫，怎麼好懂怎麼來。
+                                </p>
+                                <div class="bg-white p-4 rounded-lg flex justify-center items-center h-48">
+                                     <svg class="w-24 h-24 text-indigo-300 animate-pulse" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                    <p class="text-center text-gray-500 italic ml-4">心智圖示意</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-r from-rose-50 to-pink-50 rounded-xl p-6 shadow-md expandable-block" data-title="學習方法：問題導向">
+                                <h3 class="text-xl font-bold mb-4 text-rose-800">❓ 問題導向學習 (PBL)</h3>
+                                <p class="text-gray-700 mb-4">
+                                    變身偵探！從一個「為什麼」出發，主動找線索（資料）、推理（假設）、破案（形成結論）。
+                                </p>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <ol class="list-decimal list-inside space-y-2 text-gray-700 text-sm">
+                                        <li>發現疑案 (例：為何要有言論自由?)</li>
+                                        <li>蒐集線索 (查課本、找案例)</li>
+                                        <li>大膽假設 (可能是為了…監督政府？)</li>
+                                        <li>小心求證 (歷史事件、大法官解釋)</li>
+                                        <li>破案報告 (形成自己的理解)</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Tab Content: Exam Tips -->
+                <div class="tab-content p-8" id="exam-content">
+                    <h3 class="text-3xl font-bold mb-8 text-center text-purple-700 drop-shadow">💯 分數神神答 💯</h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 stagger-children">
+                        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-400 expandable-block" data-title="考試技巧：關鍵字" style="--stagger-index: 1;">
+                            <h4 class="text-xl font-bold mb-4 text-purple-800">🔑 關鍵字策略</h4>
+                            <p class="text-gray-700 mb-4">
+                                <span class="highlight-text">善用關鍵字、慎用刪去法</span>
+                            </p>
+                            <ul class="space-y-3 text-gray-700 list-disc list-inside">
+                                <li>圈出題目的「題眼」：最、主、首、直、非…</li>
+                                <li>刪去法好用但有風險，小心被「部分正確」的選項迷惑。</li>
+                            </ul>
+                            <div class="mt-4 bg-purple-50 p-4 rounded-lg border border-purple-100">
+                                <p class="text-sm text-purple-700">
+                                    <span class="font-bold">例子：</span> 題目問「憲法的<span class="font-bold text-red-600">首要</span>功能」，答案要找最核心那個，其他對的可能只是次要功能。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-400 expandable-block" data-title="考試技巧：師生賽局" style="--stagger-index: 2;">
+                            <h4 class="text-xl font-bold mb-4 text-blue-800">🎭 師生賽局</h4>
+                            <p class="text-gray-700 mb-4">
+                                <span class="highlight-text">長得像答案的往往不是答案</span>
+                            </p>
+                            <p class="text-gray-700 mb-4">
+                                出題老師有時會放「誘答選項」，看起來超合理，但仔細一看有陷阱。換位思考：老師想考倒你什麼？
+                            </p>
+                             <div class="mt-4 bg-blue-50 p-4 rounded-lg border border-blue-100">
+                                <p class="text-sm text-blue-700">
+                                    <span class="font-bold">技巧：</span> 選項太完美？停下來想一想，是不是有更精確或更符合題幹限制的答案。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-400 expandable-block" data-title="考試技巧：心態調整" style="--stagger-index: 3;">
+                             <h4 class="text-xl font-bold mb-4 text-green-800">🧘 心態調整</h4>
+                            <p class="text-gray-700 mb-4">
+                                <span class="highlight-text">別氣餒，有時會不小心變成閱讀測驗題</span>
+                            </p>
+                            <p class="text-gray-700 mb-4">
+                                遇到題幹超長、選項模稜兩可的「素養題」？深呼吸～有時只是考你的閱讀理解和耐心。找出關鍵訊息，排除最扯的。
+                            </p>
+                            <div class="mt-4 bg-green-50 p-4 rounded-lg border border-green-100">
+                                <p class="text-sm text-green-700">
+                                    <span class="font-bold">應對：</span> 保持冷靜，先抓題幹重點，再比對選項。真的卡關就先跳過，別影響後面。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-amber-400 expandable-block" data-title="考試技巧：最終忠告" style="--stagger-index: 4;">
+                            <h4 class="text-xl font-bold mb-4 text-amber-800">📢 最終忠告</h4>
+                            <p class="text-gray-700 mb-4">
+                                <span class="highlight-text">技巧都只是「求生」，想拿高分還是要多花點功夫</span>
+                            </p>
+                            <p class="text-gray-700 mb-4">
+                                考試技巧是輔助，不能取代扎實的學習。基本功練好，技巧才能發揮最大效益。穩紮穩打才是王道！
+                            </p>
+                            <div class="mt-4 bg-amber-50 p-4 rounded-lg border border-amber-100">
+                                <p class="text-sm text-amber-700">
+                                    <span class="font-bold">平衡：</span> 80% 練基本功 (理解概念) + 20% 練技巧 (刷題、檢討) = 高分方程式！
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-10 bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg p-6 text-center shadow-inner">
+                        <p class="text-lg font-bold text-purple-800">
+                            記住：公民科不只是為了考試分數，更是為了讓你成為<span class="highlight-text">社會生存高手</span>！🚀
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Quiz Section -->
+        <section id="quiz" class="mb-20 fade-in rounded-3xl shadow-lg overflow-hidden">
+             <h2 class="text-4xl font-bold mb-12 text-center pt-12">
+                <span class="gradient-text">⚔️ 測試你的公民求生能力 ⚔️</span>
+            </h2>
+
+            <div class="bg-white rounded-2xl shadow-xl p-8 mx-6 mb-12">
+                <div id="quiz-container">
+                    <div id="question-container" class="mb-8 bg-purple-50 p-6 rounded-lg border border-purple-200">
+                        <h3 class="text-xl font-bold mb-4 text-purple-800">🎬 情境題：公民神的雙溪小記者YouTube頻道</h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            公民神花了十年時間嘔心瀝血經營一個雙溪小記者YouTube頻道，好不容易累積了91個訂閱。某天，她登入時發現密碼錯誤，驚覺頻道已被盜用！她懷疑是友人因為羨慕、忌妒、恨而盜用備用信箱和猜到可能的密碼組合，將頻道所有權轉移。公民神心急如焚，該如何處理？
+                        </p>
+                    </div>
+
+                    <div id="options-container" class="space-y-4">
+                        <div class="option p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 transition duration-200 border border-transparent hover:border-purple-300" data-correct="false">
+                            <p><span class="font-bold mr-2">A.</span> 摸摸鼻子算了，這是自己沒保管好密碼的錯，頻道合法轉移，無法挽回。</p>
+                        </div>
+                        <div class="option p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 transition duration-200 border border-transparent hover:border-purple-300" data-correct="true">
+                            <p><span class="font-bold mr-2">B.</span> 立刻透過YouTube官方管道申訴帳號被盜，提供頻道創立、影片原始檔等證明自己是原創者。</p>
+                        </div>
+                        <div class="option p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 transition duration-200 border border-transparent hover:border-purple-300" data-correct="false">
+                            <p><span class="font-bold mr-2">C.</span> 氣沖沖地找該名友人理論，在社群媒體公開批評她的行為，讓她被輿論攻擊。</p>
+                        </div>
+                        <div class="option p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 transition duration-200 border border-transparent hover:border-purple-300" data-correct="false">
+                            <p><span class="font-bold mr-2">D.</span> 放棄舊頻道，反正才91個訂閱而已，並呼籲粉絲趕緊訂閱新頻道。</p>
+                        </div>
+                    </div>
+
+                    <div id="result-container" class="mt-8 hidden">
+                        <div id="correct-answer" class="bg-green-100 border-l-4 border-green-500 p-4 rounded hidden">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-green-700">
+                                        <span class="font-bold">正確！果然是公民神👍</span>  數位平臺的智慧財產權和帳號安全機制很重要！循官方管道並提供證據是標準處理程序。懂點法律和平臺規則才能保護自己的心血！
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="wrong-answer" class="bg-red-100 border-l-4 border-red-500 p-4 rounded hidden">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-red-700">
+                                        <span class="font-bold">不對喔！🤔</span> (A)輕易放棄可能無法解決問題，甚至引發更多麻煩。(C)私下衝突可能無法解決問題，甚至引發更多麻煩。(D)大錯特錯！什麼叫做才91個訂閱，這是公民神嘔心瀝血才有的成果好嘛！現在快去搜尋雙溪小記者YouTube頻道，訂閱、按讚、開啟小鈴鐺！正確答案是 <span class="font-bold">B</span>。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 text-center">
+                        <!-- Removed Next Question button for single question -->
+                        <button id="restart-quiz" class="bg-purple-600 text-white font-bold py-2 px-6 rounded-full hover:bg-purple-700 transition interactive-btn hidden">
+                            🔄 再試一次
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary Section -->
+        <section id="summary" class="mb-20 fade-in rounded-3xl shadow-lg overflow-hidden">
+             <h2 class="text-4xl font-bold mb-12 text-center pt-12 text-white drop-shadow-lg">
+                <span class="gradient-text" style="background: linear-gradient(90deg, #fde047, #f8fafc); -webkit-background-clip: text; background-clip: text; color: transparent;">學習公民的終極目標</span> 🏆
+            </h2>
+
+            <div class="bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl shadow-xl p-8 mx-6 mb-12 text-white">
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="md:w-1/3 fade-in" style="--delay: 0.1s;">
+                         <svg class="w-full drop-shadow-lg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                             <defs>
+                                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                                  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                  <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                  </feMerge>
+                                </filter>
+                             </defs>
+                             <circle cx="100" cy="100" r="80" fill="rgba(255,255,255,0.1)" />
+                             <path d="M100,20 A80,80 0 0,1 100,180 A80,80 0 0,1 100,20" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-dasharray="10,5" fill="none" transform="rotate(-90 100 100)">
+                                <animateTransform attributeName="transform" type="rotate" from="-90 100 100" to="270 100 100" dur="15s" repeatCount="indefinite"/>
+                            </path>
+
+                            <g text-anchor="middle" font-family="'Noto Sans TC', sans-serif" font-size="11" fill="white" font-weight="bold">
+                                <circle cx="100" cy="45" r="22" fill="rgba(255,255,255,0.25)" />
+                                <text x="100" y="49">理解社會</text>
+
+                                <circle cx="155" cy="80" r="22" fill="rgba(255,255,255,0.25)" />
+                                <text x="155" y="84">保障權益</text>
+
+                                <circle cx="135" cy="145" r="22" fill="rgba(255,255,255,0.25)" />
+                                <text x="135" y="149">公共參與</text>
+
+                                <circle cx="65" cy="145" r="22" fill="rgba(255,255,255,0.25)" />
+                                <text x="65" y="149">批判思考</text>
+
+                                <circle cx="45" cy="80" r="22" fill="rgba(255,255,255,0.25)" />
+                                <text x="45" y="84">擔負責任</text>
+                            </g>
+
+                             <circle cx="100" cy="100" r="35" fill="rgba(255, 255, 255, 0.9)" filter="url(#glow)" />
+                             <text x="100" y="105" font-family="'Noto Sans TC', sans-serif" font-size="13" fill="#4338ca" text-anchor="middle" font-weight="900">公民好神</text>
+                        </svg>
+                    </div>
+
+                    <div class="md:w-2/3 fade-in" style="--delay: 0.3s;">
+                        <h3 class="text-2xl font-bold mb-6 leading-snug">不是要你愛上它，但懂點皮毛，能讓你<span class="highlight-text">少遇到</span>很多麻煩！</h3>
+                        <p class="mb-4 opacity-90">
+                            公民科的學習不只為了考試成績單上的數字，更是為了你在這個越來越複雜的「社會Online」大型真人實境遊戲中，能活得更<span class="font-semibold">聰明</span>、更<span class="font-semibold">安全</span>、更<span class="font-semibold">有底氣</span>。
+                        </p>
+                        <p class="mb-6 opacity-90">
+                           它教你認識遊戲規則（法律、制度），了解自身權利（裝備），看懂局勢（地圖），最終成為一個能<span class="font-semibold">保護自己</span>、<span class="font-semibold">理性判斷</span>、甚至能<span class="font-semibold">影響遊戲走向</span>的玩家！
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <div class="bg-white bg-opacity-25 px-4 py-2 rounded-full shadow-sm transform hover:scale-110 transition duration-200">
+                                <span class="text-sm font-medium">🛡️ 趨吉避凶</span>
+                            </div>
+                            <div class="bg-white bg-opacity-25 px-4 py-2 rounded-full shadow-sm transform hover:scale-110 transition duration-200">
+                                <span class="text-sm font-medium">⚖️ 保護權益</span>
+                            </div>
+                            <div class="bg-white bg-opacity-25 px-4 py-2 rounded-full shadow-sm transform hover:scale-110 transition duration-200">
+                                <span class="text-sm font-medium">🧠 理性思考</span>
+                            </div>
+                            <div class="bg-white bg-opacity-25 px-4 py-2 rounded-full shadow-sm transform hover:scale-110 transition duration-200">
+                                <span class="text-sm font-medium">🗣️ 社會參與</span>
+                            </div>
+                             <div class="bg-white bg-opacity-25 px-4 py-2 rounded-full shadow-sm transform hover:scale-110 transition duration-200">
+                                <span class="text-sm font-medium">💪 生存升級</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="mb-6 md:mb-0 text-center md:text-left">
+                    <h2 class="text-2xl font-bold mb-2 text-white">公民好神—社會求生指南</h2>
+                    <p>分享人：新北市立雙溪高中 邱俐瑜</p>
+                </div>
+
+                <!-- Updated Footer Navigation with Icons -->
+                <nav class="flex flex-wrap justify-center gap-4 md:gap-6">
+                    <a href="#why-learn" class="hover:text-purple-300 transition duration-200 flex items-center">
+                        <i class="fas fa-question-circle mr-1"></i> 為何學公民
+                    </a>
+                    <a href="#challenges" class="hover:text-purple-300 transition duration-200 flex items-center">
+                        <i class="fas fa-exclamation-triangle mr-1"></i> 學習挑戰
+                    </a>
+                    <a href="#mindset" class="hover:text-purple-300 transition duration-200 flex items-center">
+                        <i class="fas fa-lightbulb mr-1"></i> 思維轉換
+                    </a>
+                    <a href="#learning-tips" class="hover:text-purple-300 transition duration-200 flex items-center">
+                        <i class="fas fa-book-open mr-1"></i> 學習秘訣
+                    </a>
+                    <a href="#quiz" class="hover:text-purple-300 transition duration-200 flex items-center">
+                        <i class="fas fa-vial mr-1"></i> 互動測驗
+                    </a>
+                    <a href="#summary" class="hover:text-purple-300 transition duration-200 flex items-center">
+                        <i class="fas fa-bullseye mr-1"></i> 學習目標
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Updated Social Links Section with Icons -->
+            <div class="mb-8 text-center border-t border-gray-700 pt-8">
+                <h3 class="text-lg font-semibold mb-4 text-white">公民神傳送門</h3>
+                 <div class="flex flex-wrap justify-center items-center gap-6 text-gray-400 text-xl">
+                    <a href="https://gongminshen.tumblr.com" target="_blank" rel="noopener noreferrer" title="官方網站" class="hover:text-purple-300 transition duration-200">
+                         <i class="fas fa-globe"></i>
+                         <span class="sr-only">官方網站</span>
+                    </a>
+                    <a href="https://sites.google.com/view/gongminshen" target="_blank" rel="noopener noreferrer" title="協作平臺" class="hover:text-purple-300 transition duration-200">
+                         <i class="fas fa-users"></i>
+                         <span class="sr-only">協作平臺</span>
+                    </a>
+                    <a href="https://www.facebook.com/GongMinShen" target="_blank" rel="noopener noreferrer" title="FB粉專" class="hover:text-purple-300 transition duration-200">
+                         <i class="fab fa-facebook-f"></i>
+                         <span class="sr-only">FB粉專</span>
+                    </a>
+                    <a href="https://www.instagram.com/gongminshen" target="_blank" rel="noopener noreferrer" title="IG粉專" class="hover:text-purple-300 transition duration-200">
+                         <i class="fab fa-instagram"></i>
+                         <span class="sr-only">IG粉專</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-gray-700 text-center text-sm">
+                <p>願你在社會的叢林中，趨吉避凶，活得好神！</p>
+                <p>Copyright © Liyuchiutiger Gongminshen</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path> <!-- Adjusted arrow shape -->
+        </svg>
+    </button>
+
+    <!-- Modal Structure -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div id="modal-content" class="modal-content">
+             <button id="modal-close-btn" class="modal-close-btn">×</button>
+             <div id="modal-body">
+                 <!-- Content will be injected here by JavaScript -->
+             </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Smooth scrolling for anchor links & Start Journey Button
+        document.querySelectorAll('a[href^="#"], button[id="start-journey"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href') || '#why-learn'; // Use #why-learn for the button
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Calculate offset for sticky header/nav if necessary
+                    const headerOffset = document.querySelector('.top-social-links') ? document.querySelector('.top-social-links').offsetHeight : 0; // Adjust selector if different
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset - 20; // Extra padding
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                    // Old way (no offset):
+                    // targetElement.scrollIntoView({
+                    //     behavior: 'smooth',
+                    //     block: 'start' // Aligns the top of the target element to the top of the viewport
+                    // });
+                }
+            });
+        });
+
+        // Tab functionality
+        const tabContainer = document.querySelector('#learning-tips .flex.border-b');
+        if (tabContainer) {
+            const tabBtns = tabContainer.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('#learning-tips .tab-content');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Deactivate all buttons and content
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Activate clicked button and corresponding content
+                    btn.classList.add('active');
+                    const tabId = btn.getAttribute('data-tab');
+                    const activeContent = document.getElementById(`${tabId}-content`);
+                    if (activeContent) {
+                        activeContent.classList.add('active');
+                         // Re-trigger stagger animation for content inside the activated tab
+                        const staggerItems = activeContent.querySelectorAll('.stagger-children > *');
+                        staggerItems.forEach((item, index) => {
+                            item.style.opacity = '0'; // Reset for animation
+                            item.style.transform = 'translateY(20px)';
+                            item.style.transition = 'none'; // Disable transition temporarily
+                             // Force reflow hack
+                             void item.offsetWidth;
+                            item.style.transition = `opacity 0.5s ease-out ${index * 0.1 + 0.1}s, transform 0.5s ease-out ${index * 0.1 + 0.1}s`;
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+
+                        });
+                    }
+                });
+            });
+        } else {
+            console.error("Tab container not found.");
+        }
+
+
+        // Quiz functionality
+        const quizContainer = document.getElementById('quiz-container');
+        if (quizContainer) {
+            const options = quizContainer.querySelectorAll('.option');
+            const resultContainer = quizContainer.querySelector('#result-container');
+            const correctAnswer = quizContainer.querySelector('#correct-answer');
+            const wrongAnswer = quizContainer.querySelector('#wrong-answer');
+            const restartQuiz = quizContainer.querySelector('#restart-quiz');
+
+            options.forEach(option => {
+                option.addEventListener('click', () => {
+                    // Disable further clicks and remove hover effects
+                    options.forEach(opt => {
+                        opt.classList.remove('hover:bg-gray-200', 'hover:border-purple-300');
+                        opt.style.pointerEvents = 'none';
+                        opt.style.cursor = 'default';
+                        // Reset visual state except for the selected one
+                        if(opt !== option) {
+                             opt.classList.remove('bg-green-100', 'border-green-500', 'bg-red-100', 'border-red-500');
+                             opt.classList.add('bg-gray-100');
+                             opt.style.borderColor = 'transparent';
+                        }
+                    });
+
+                    // Determine correctness and style accordingly
+                    const isCorrect = option.getAttribute('data-correct') === 'true';
+                    resultContainer.classList.remove('hidden');
+                    correctAnswer.classList.add('hidden'); // Hide both initially
+                    wrongAnswer.classList.add('hidden');
+
+                    if (isCorrect) {
+                        option.classList.remove('bg-gray-100');
+                        option.classList.add('bg-green-100', 'border-green-500');
+                        option.style.borderColor = 'var(--green-500)'; // Ensure border color is applied
+                        correctAnswer.classList.remove('hidden');
+                    } else {
+                        option.classList.remove('bg-gray-100');
+                        option.classList.add('bg-red-100', 'border-red-500');
+                        option.style.borderColor = 'var(--red-500)'; // Ensure border color is applied
+                        wrongAnswer.classList.remove('hidden');
+
+                        // Also highlight the correct answer
+                        options.forEach(opt => {
+                            if (opt.getAttribute('data-correct') === 'true') {
+                                opt.classList.remove('bg-gray-100');
+                                opt.classList.add('bg-green-100', 'border-green-500');
+                                opt.style.borderColor = 'var(--green-500)';
+                            }
+                        });
+                    }
+
+                    restartQuiz.classList.remove('hidden');
+                });
+            });
+
+            restartQuiz.addEventListener('click', () => {
+                options.forEach(opt => {
+                    opt.classList.remove('bg-green-100', 'border-green-500', 'bg-red-100', 'border-red-500');
+                    opt.classList.add('bg-gray-100', 'hover:bg-gray-200', 'hover:border-purple-300');
+                    opt.style.borderColor = 'transparent';
+                    opt.style.pointerEvents = 'auto';
+                     opt.style.cursor = 'pointer';
+                });
+
+                resultContainer.classList.add('hidden');
+                correctAnswer.classList.add('hidden');
+                wrongAnswer.classList.add('hidden');
+                restartQuiz.classList.add('hidden');
+            });
+        } else {
+            console.error("Quiz container not found.");
+        }
+
+        // Scroll-triggered animations (Fade In)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Trigger stagger on parent visibility
+                    const staggerContainer = entry.target.querySelector('.stagger-children');
+                    if(staggerContainer){
+                        const staggerItems = staggerContainer.querySelectorAll(':scope > *');
+                        staggerItems.forEach(item => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        });
+                    }
+                   // observer.unobserve(entry.target); // Optional: stop observing once visible
+                }
+                // Optional: remove 'visible' class if element scrolls out of view
+                // else {
+                //     entry.target.classList.remove('visible');
+                // }
+            });
+        }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
+
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Back to top button
+        const backToTop = document.getElementById('back-to-top');
+        if (backToTop) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) { // Show button after scrolling down a bit more
+                    backToTop.style.display = 'block';
+                    backToTop.style.opacity = '1'; // Fade in effect
+                } else {
+                     backToTop.style.opacity = '0'; // Fade out effect
+                     // Hide completely after transition
+                    setTimeout(() => {
+                        if (window.scrollY <= 400) {
+                             backToTop.style.display = 'none';
+                        }
+                    }, 300); // Match transition duration
+                }
+            });
+
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        } else {
+            console.error("Back to top button not found.");
+        }
+
+       // Modal Functionality
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalContent = document.getElementById('modal-content');
+        const modalBody = document.getElementById('modal-body');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const expandableBlocks = document.querySelectorAll('.expandable-block');
+
+        expandableBlocks.forEach(block => {
+            block.addEventListener('click', (e) => {
+                // Prevent nested expandable blocks from triggering parent modals
+                if (e.target.closest('.expandable-block') !== block) {
+                    return;
+                }
+
+                // Clone the content (deep clone)
+                const contentToClone = block.cloneNode(true);
+                // Remove the expandable class from the clone to prevent re-opening
+                contentToClone.classList.remove('expandable-block');
+                 contentToClone.classList.remove('card'); // Remove card class if present to stop hover effects
+                contentToClone.style.cursor = 'default'; // Change cursor in modal
+
+
+                // Clear previous content and append the cloned content
+                modalBody.innerHTML = '';
+                modalBody.appendChild(contentToClone);
+
+                // Show the modal
+                modalOverlay.classList.add('active');
+                document.body.classList.add('modal-active');
+            });
+        });
+
+        // Close modal function
+        const closeModal = () => {
+            modalOverlay.classList.remove('active');
+            document.body.classList.remove('modal-active');
+            // Clear content after animation
+             setTimeout(() => {
+                modalBody.innerHTML = '';
+            }, 400); // Match transition duration
+        };
+
+        // Close modal events
+        if (modalCloseBtn) {
+            modalCloseBtn.addEventListener('click', closeModal);
+        }
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', (e) => {
+                // Close only if clicking on the overlay itself, not the content
+                if (e.target === modalOverlay) {
+                    closeModal();
+                }
+            });
+        }
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Initialize first tab content stagger animation on load
+        window.addEventListener('load', () => {
+            const initialActiveTab = document.querySelector('#learning-tips .tab-content.active');
+            if (initialActiveTab) {
+                const staggerItems = initialActiveTab.querySelectorAll('.stagger-children > *');
+                 staggerItems.forEach((item, index) => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                 });
+            }
+        });
+
+        // --- Liyu Chill Guy Speech Bubble Interaction ---
+        const liyuImage = document.getElementById('liyu-image');
+        const speechBubble = document.getElementById('speech-bubble');
+        const phrases = [
+            "公民好神！我會遵守公民神會員守則！",
+            "努力向上、勇往直前、不畏艱難，我要成為公民神！",
+            "公民神有三力：注意力、記憶力、戰鬥力！"
+        ];
+        let currentPhraseIndex = -1; // Start before the first phrase
+
+        if (liyuImage && speechBubble) {
+            liyuImage.addEventListener('click', () => {
+                currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length; // Cycle through phrases
+                speechBubble.textContent = phrases[currentPhraseIndex];
+                speechBubble.classList.add('visible');
+
+                // Optional: Hide bubble after a few seconds
+                // setTimeout(() => {
+                //     speechBubble.classList.remove('visible');
+                // }, 4000); // Hide after 4 seconds
+            });
+             // Optional: Hide bubble if clicked outside the image/bubble area
+             document.addEventListener('click', (event) => {
+                 if (speechBubble.classList.contains('visible') && !liyuImage.contains(event.target) && !speechBubble.contains(event.target)) {
+                     speechBubble.classList.remove('visible');
+                     currentPhraseIndex = -1; // Reset index if hidden
+                 }
+             });
+        } else {
+            console.error("Liyu image or speech bubble element not found.");
+        }
+
+
+    </script>
+</body>
+</html>
